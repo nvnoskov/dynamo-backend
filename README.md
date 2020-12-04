@@ -1,5 +1,5 @@
 # Dynamo Backend Challenge
-
+[![Code Coverage](https://codecov.io/gh/nvnoskov/dynamo-backend/branch/master/graph/badge.svg)](https://codecov.io/gh/nvnoskov/dynamo-backend)
 
 ## 
 This project based on Go RESTful API Starter Kit
@@ -34,10 +34,10 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `POST /v1/login`: authenticates a user and generates a JWT
 * `POST /v1/register`: register a user
 * `GET /v1/flights`: returns a paginated list of the flights 
-* `GET /v1/flights/:id`: returns the detailed information of an album
-* `POST /v1/flights`: creates a new album
-* `PUT /v1/flights/:id`: updates an existing album
-* `DELETE /v1/flights/:id`: deletes an album
+* `GET /v1/flights/:id`: returns the detailed information of an flight
+* `POST /v1/flights`: creates a new flight
+* `PUT /v1/flights/:id`: updates an existing flight
+* `DELETE /v1/flights/:id`: deletes an flight
 
 Try the URL `http://localhost:8080/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
 
