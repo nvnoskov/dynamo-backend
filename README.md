@@ -97,4 +97,5 @@ command,
 ```
 
 ## TODO
+ - Add partial search for the `name` parameter (like%)
  - Swagger Docs
