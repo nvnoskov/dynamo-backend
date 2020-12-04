@@ -1,0 +1,59 @@
+package auth
+
+import (
+	routing "github.com/go-ozzo/ozzo-routing/v2"
+	"github.com/nvnoskov/dynamo-backend/internal/errors"
+	"github.com/nvnoskov/dynamo-backend/pkg/log"
+)
+
+// RegisterHandlers registers handlers for different HTTP requests.
+func RegisterHandlers(rg *routing.RouteGroup, service Service, logger log.Logger) {
+	rg.Post("/login", login(service, logger))
+	rg.Post("/register", register(service, logger))
+}
+
+// login returns a handler that handles user login request.
+func login(service Service, logger log.Logger) routing.Handler {
+	return func(c *routing.Context) error {
+		var req struct {
+			Username string `json:"username"`
+			Password string `json:"password"`
+		}
+
+		if err := c.Read(&req); err != nil {
+			logger.With(c.Request.Context()).Errorf("invalid request: %v", err)
+			return errors.BadRequest("")
+		}
+
+		token, err := service.Login(c.Request.Context(), req.Username, req.Password)
+		if err != nil {
+			return err
+		}
+		return c.Write(struct {
+			Token string `json:"token"`
+		}{token})
+	}
+}
+
+// login returns a handler that handles user login request.
+func register(service Service, logger log.Logger) routing.Handler {
+
+	return func(c *routing.Context) error {
+
+		var req RegisterRequest
+		if err := c.Read(&req); err != nil {
+			logger.With(c.Request.Context()).Errorf("invalid request: %v", err)
+			return errors.BadRequest("")
+		}
+
+		user, err := service.Register(c.Request.Context(), req)
+		if err != nil {
+			return err
+		}
+		return c.Write(struct {
+			ID    string `json:"id"`
+			Name  string `json:"name"`
+			Email string `json:"email"`
+		}{user.ID, user.Name, user.Email})
+	}
+}
